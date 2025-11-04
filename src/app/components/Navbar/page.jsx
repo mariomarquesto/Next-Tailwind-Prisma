@@ -19,17 +19,17 @@ const { data: session, status } = useSession();
         {/* Menú de escritorio */}
         <ul className="hidden md:flex space-x-4">
           <li>
-            <Link href="/home" className="hover:text-gray-300">
+            <Link href="/Home" className="hover:text-gray-300">
               Home
             </Link>
           </li>
           <li>
-            <Link href="/about" className="hover:text-gray-300">
+            <Link href="/About" className="hover:text-gray-300">
               About
             </Link>
           </li>
           <li>
-            <Link href="/contact" className="hover:text-gray-300">
+            <Link href="/Contact" className="hover:text-gray-300">
               Contact
             </Link>
           </li>
