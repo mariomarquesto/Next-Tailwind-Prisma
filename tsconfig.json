@@ -30,7 +30,7 @@
     "**/*.mts",
     "**/*.ts",
     "**/*.tsx"
-, "src/lib/db.ts", "src/app/layout.jsx", "src/app/api/auth/login/page.jsx"  ],
+, "src/lib/db.ts", "src/app/layout.jsx", "src/app/api/auth/login/page.jsx", "src/app/api/user/update/route.ts", "src/app/perfil/page.tsx"  ],
   "exclude": [
     "node_modules"
   ]
