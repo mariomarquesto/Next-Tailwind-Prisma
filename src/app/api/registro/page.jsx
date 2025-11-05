@@ -4,10 +4,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
-
-
-
-
+import { motion } from "framer-motion";
 
 export default function RegisterPage() {
   const {
@@ -26,22 +23,16 @@ export default function RegisterPage() {
     try {
       const res = await fetch("/api/auth/register", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
       const result = await res.json();
-
-      if (!res.ok) {
-        throw new Error(result.error || "Error al registrar usuario");
-      }
+      if (!res.ok) throw new Error(result.error || "Error al registrar usuario");
 
       alert("Usuario registrado correctamente ✅");
       router.push("/dashboard");
     } catch (error) {
-      console.error("Error en el registro:", error);
       setServerError(error.message);
     } finally {
       setLoading(false);
@@ -49,30 +40,32 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-   
-      <form
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-amber-400 to-yellow-200 text-red-900 px-4 py-12">
+      <motion.form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-sm"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="bg-white/90 backdrop-blur-md p-8 rounded-2xl shadow-2xl w-full max-w-sm border border-red-200"
       >
-        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+        <h1 className="text-3xl font-extrabold text-center mb-6 text-red-800">
           Crear cuenta
         </h1>
 
-        {/* Campo: Nombre de usuario */}
+        {/* Nombre de usuario */}
         <div className="mb-4">
           <input
             type="text"
             placeholder="Nombre de usuario"
             {...register("username", { required: "El nombre de usuario es obligatorio" })}
-            className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-red-200 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500"
           />
           {errors.username && (
-            <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>
+            <p className="text-red-600 text-sm mt-1">{errors.username.message}</p>
           )}
         </div>
 
-        {/* Campo: Correo */}
+        {/* Correo */}
         <div className="mb-4">
           <input
             type="email"
@@ -84,14 +77,14 @@ export default function RegisterPage() {
                 message: "Correo inválido",
               },
             })}
-            className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-red-200 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500"
           />
           {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+            <p className="text-red-600 text-sm mt-1">{errors.email.message}</p>
           )}
         </div>
 
-        {/* Campo: Contraseña */}
+        {/* Contraseña */}
         <div className="mb-4">
           <input
             type="password"
@@ -100,38 +93,38 @@ export default function RegisterPage() {
               required: "La contraseña es obligatoria",
               minLength: { value: 6, message: "Mínimo 6 caracteres" },
             })}
-            className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-red-200 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500"
           />
           {errors.password && (
-            <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+            <p className="text-red-600 text-sm mt-1">{errors.password.message}</p>
           )}
         </div>
 
         {serverError && (
-          <p className="text-red-500 text-center text-sm mb-3">{serverError}</p>
+          <p className="text-red-700 text-center text-sm mb-3">{serverError}</p>
         )}
 
         <button
           type="submit"
           disabled={loading}
-          className="bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition-colors w-full"
+          className="bg-red-700 text-white font-semibold py-2 rounded-full hover:bg-red-800 transition-all shadow-md w-full"
         >
           {loading ? "Registrando..." : "Registrarse"}
         </button>
 
-        <p className="text-center mt-4 text-sm text-gray-600">
+        <p className="text-center mt-4 text-sm text-red-700">
           ¿Ya tienes cuenta?{" "}
-          <Link href="/api/auth/login" className="text-blue-600 hover:underline">
+          <Link href="/api/auth/login" className="font-semibold text-red-800 hover:underline">
             Iniciar sesión
           </Link>
         </p>
-          <p className="text-center mt-4 text-sm text-gray-600">
-          Volver{" "}
-          <Link href="/" className="text-blue-600 hover:underline">
-          Volver 
+
+        <p className="text-center mt-2 text-sm text-red-700">
+          <Link href="/" className="font-semibold text-red-800 hover:underline">
+            ← Volver al inicio
           </Link>
         </p>
-      </form>
+      </motion.form>
     </div>
   );
 }
