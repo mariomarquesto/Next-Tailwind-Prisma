@@ -1,16 +1,20 @@
 "use client";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 const Footer = () => {
-     const { data: session, status } = useSession();
+  const { data: session } = useSession();
+
   return (
     <footer className="bg-gray-900 text-gray-300 py-8 mt-auto border-t border-gray-700">
       <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
         
         {/* Marca o texto */}
         <div className="text-center md:text-left">
-          <h2 className="text-lg font-semibold text-white">{session.user?.email} 🚀</h2>
+          <h2 className="text-lg font-semibold text-white">
+            {/* Solo mostrar el email si hay sesión */}
+            {session?.user?.email ? `${session.user.email} 🚀` : "Bienvenido a mi sitio 🚀"}
+          </h2>
           <p className="text-sm text-gray-400">
             © {new Date().getFullYear()} Todos los derechos reservados.
           </p>
@@ -18,22 +22,13 @@ const Footer = () => {
 
         {/* Enlaces rápidos */}
         <div className="flex space-x-6">
-          <a
-            href="/about"
-            className="hover:text-white transition-colors duration-300"
-          >
+          <a href="/about" className="hover:text-white transition-colors duration-300">
             Acerca de
           </a>
-          <a
-            href="/contact"
-            className="hover:text-white transition-colors duration-300"
-          >
+          <a href="/contact" className="hover:text-white transition-colors duration-300">
             Contacto
           </a>
-          <a
-            href="/privacy"
-            className="hover:text-white transition-colors duration-300"
-          >
+          <a href="/privacy" className="hover:text-white transition-colors duration-300">
             Privacidad
           </a>
         </div>
@@ -69,7 +64,8 @@ const Footer = () => {
 
       {/* Línea decorativa inferior */}
       <div className="mt-6 text-center text-gray-500 text-sm">
-        Hecho con ❤️ por <span className="text-indigo-400 font-medium">Mario Marquestó Dev</span>
+        Hecho con ❤️ por{" "}
+        <span className="text-indigo-400 font-medium">Mario Marquestó Dev</span>
       </div>
     </footer>
   );

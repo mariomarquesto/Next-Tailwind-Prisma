@@ -93,7 +93,7 @@ export default function HomePage() {
           className="mt-16 text-center"
         >
           <button
-            onClick={() => signOut({ callbackUrl: "/login" })}
+            onClick={() => signOut({ callbackUrl: "/" })}
             className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors font-semibold shadow-md"
           >
             Cerrar sesión

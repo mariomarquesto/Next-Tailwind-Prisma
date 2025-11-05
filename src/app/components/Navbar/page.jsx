@@ -1,28 +1,39 @@
 "use client";
+
 import { useSession, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <nav className="bg-gray-800 p-4 text-white">
+    <nav className="bg-gray-800 p-4 text-white shadow-md">
       <div className="container mx-auto flex justify-between items-center">
-        <Link href="#" className="text-xl font-bold">
-        {session.user?.email}
-        </Link>
+        {/* Logo o nombre del sitio */}
+        {session ? (
+          <Link href="/dashboard" className="text-xl font-bold hover:text-indigo-400 transition">
+            {session.user?.email}
+          </Link>
+        ) : (
+          <Link href="/" className="text-xl font-bold">
+            Mi Sitio Web
+          </Link>
+        )}
 
         {/* Menú de escritorio */}
-        <ul className="hidden md:flex space-x-4">
-          <li>
-            <Link href="/Home" className="hover:text-gray-300">
-              Home
-            </Link>
-          </li>
+        <ul className="hidden md:flex space-x-4 items-center">
+          {/* Mostrar "Home" solo si el usuario está logeado */}
+          {session && (
+            <li>
+              <Link href="/Home" className="hover:text-gray-300">
+                Home
+              </Link>
+            </li>
+          )}
+
           <li>
             <Link href="/About" className="hover:text-gray-300">
               About
@@ -33,6 +44,18 @@ const { data: session, status } = useSession();
               Contact
             </Link>
           </li>
+
+          {/* Solo mostrar "Cerrar sesión" si hay sesión */}
+          {session && (
+            <li>
+              <button
+                onClick={() => signOut({ callbackUrl: "/" })}
+                className="hover:text-red-400"
+              >
+                Cerrar sesión
+              </button>
+            </li>
+          )}
         </ul>
 
         {/* Botón menú móvil */}
@@ -55,22 +78,51 @@ const { data: session, status } = useSession();
 
       {/* Menú móvil */}
       {isOpen && (
-        <ul className="md:hidden bg-gray-700 p-4 space-y-2 mt-2">
+        <ul className="md:hidden bg-gray-700 p-4 space-y-2 mt-2 rounded-lg">
+          {session && (
+            <li>
+              <Link
+                href="/Home"
+                className="block hover:text-gray-300"
+                onClick={() => setIsOpen(false)}
+              >
+                Home
+              </Link>
+            </li>
+          )}
+
           <li>
-            <Link href="/home" className="block hover:text-gray-300" onClick={() => setIsOpen(false)}>
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link href="/about" className="block hover:text-gray-300" onClick={() => setIsOpen(false)}>
+            <Link
+              href="/About"
+              className="block hover:text-gray-300"
+              onClick={() => setIsOpen(false)}
+            >
               About
             </Link>
           </li>
           <li>
-            <Link href="/contact" className="block hover:text-gray-300" onClick={() => setIsOpen(false)}>
+            <Link
+              href="/Contact"
+              className="block hover:text-gray-300"
+              onClick={() => setIsOpen(false)}
+            >
               Contact
             </Link>
           </li>
+
+          {session && (
+            <li>
+              <button
+                onClick={() => {
+                  signOut({ callbackUrl: "/" });
+                  setIsOpen(false);
+                }}
+                className="text-red-400 block"
+              >
+                Cerrar sesión
+              </button>
+            </li>
+          )}
         </ul>
       )}
     </nav>
